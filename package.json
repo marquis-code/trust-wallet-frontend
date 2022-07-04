@@ -27,7 +27,7 @@
     "@nuxtjs/composition-api": "^0.31.0",
     "@nuxtjs/moment": "^1.6.1",
     "@nuxtjs/pwa": "^3.3.5",
-    "@vueform/vueform": "file:./packages/vueform",
+    "@vueform/vueform": "^1.2.6",
     "axios": "^0.25.0",
     "core-js": "^3.19.3",
     "lodash": "^4.17.21",
