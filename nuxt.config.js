@@ -30,7 +30,6 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
-    '@nuxtjs/composition-api/module',
     '@nuxtjs/moment',
     '@nuxt/postcss8',
   ],
@@ -63,9 +62,6 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    extend (config) {
-      config.resolve.alias['composition-api'] = path.resolve(__dirname, 'node_modules/@nuxtjs/composition-api')
-    },
     postcss: {
       plugins: {
         tailwindcss: {},
