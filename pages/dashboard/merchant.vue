@@ -1,0 +1,865 @@
+<!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable vue/multi-word-component-names -->
+<template>
+  <main class="w-full">
+    <div class="w-full h-screen overflow-y-auto px-6 md:px-14 py-6 space-y-10">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 style="color: #360040" class="hidden md:block font-bold text-xl">
+            Dashboard
+          </h1>
+        </div>
+        <div class="flex items-center md:space-x-6 space-x-4">
+          <div><img src="@/assets/img/nigeriaLogo.svg" alt=""></div>
+          <div><img src="@/assets/img/notification_icon.svg" alt=""></div>
+          <div>
+            <img
+              src="@/assets/img/avatar_icon.svg"
+              class="rounded-full"
+              alt=""
+            >
+          </div>
+          <div class="relative">
+            <p style="color: #360040" class="md:text-xl font-bold pb-0 mb-0">
+              Ama
+            </p>
+            <p class="pt-0 mt-0 text-sm" style="color: #360040">
+              {{
+                loggedInUser?.phone?.slice(1)
+                  ? loggedInUser?.phone?.slice(1)
+                  : "0000000000"
+              }}
+            </p>
+            <div class="absolute top-1 right-8 md:right-6">
+              <img src="@/assets/img/star_icon.svg" alt="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:flex items-center md:space-x-16 space-y-9 md:space-y-0">
+        <div
+          class="flex space-x-4 bg-white shadow-md rounded-lg px-6 py-4 md:w-1/2 border"
+        >
+          <div>
+            <img
+              src="@/assets/img/dispute_transaction_icon.svg"
+              class="h-10 w-10 md:h-auto md:w-auto"
+              alt=""
+            >
+          </div>
+          <div>
+            <p style="color: #360040" class="font-light text-sm md:text-base">
+              Transactions in dispute
+            </p>
+            <p style="color: #360040">
+              0
+            </p>
+          </div>
+        </div>
+        <div
+          class="flex space-x-4 bg-white shadow-md rounded-lg px-6 py-4 md:w-1/2 border"
+        >
+          <div>
+            <img
+              src="@/assets/img/successful_transaction_logo.svg"
+              class="h-10 w-10 md:h-auto md:w-auto"
+              alt=""
+            >
+          </div>
+          <div>
+            <p style="color: #360040" class="font-light text-sm md:text-base">
+              Successful transactions
+            </p>
+            <p style="color: #360040">
+              0
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="md:flex items-center md:space-x-16 space-y-9 md:space-y-0">
+        <div
+          class="flex space-x-4 bg-white shadow-md rounded-lg md:px-6 px-3 py-4 md:w-1/2 border"
+        >
+          <div>
+            <img
+              src="@/assets/img/shopper_escrow_transaction_logo.svg"
+              alt=""
+              class="h-10 w-10 md:h-auto md:w-auto"
+            >
+          </div>
+          <div>
+            <p style="color: #360040" class="font-light text-sm md:text-base">
+              Escrow Transactions ( Shopper)
+            </p>
+            <p style="color: #360040">
+              0
+            </p>
+          </div>
+        </div>
+
+        <div
+          class="flex space-x-4 bg-white shadow-md rounded-lg md:px-6 px-3 py-4 md:w-1/2 border"
+        >
+          <div>
+            <img
+              src="@/assets/img/dropshipper_escrow_transaction_logo.svg"
+              alt=""
+              class="h-10 w-10 md:h-auto md:w-auto"
+            >
+          </div>
+          <div>
+            <p style="color: #360040" class="font-light text-sm md:text-base">
+              Escrow Transactions ( Dropshippers)
+            </p>
+            <p style="color: #360040">
+              0
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="md:p-10 p-4 py-4 md:py-0 shadow-md rounded-md space-y-4 border"
+      >
+        <div
+          style="background-color: #ba68c8"
+          class="rounded-full w-14 h-14 flex justify-center items-center"
+        >
+          <img
+            src="@/assets/img/wallet_icon_white.svg"
+            class="h-7 w-7"
+            alt=""
+          >
+        </div>
+
+        <div
+          class="md:flex justify-between items-center space-y-9 md:space-y-0"
+        >
+          <div class="space-y-3">
+            <p style="color: #360040" class="font-light text-sm md:text-base">
+              Escrow wallet balance
+            </p>
+            <div class="flex items-center space-x-2">
+              <div><img src="@/assets/img/nigeriaLogo.svg" alt=""></div>
+              <p class="font-semibold md:text-xl">
+                (NGN)
+                {{
+                  loggedInUser?.escrowWalletBalance
+                    ? loggedInUser?.escrowWalletBalance
+                    : "0.00"
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="md:flex items-center md:space-x-6 space-y-6 md:space-y-0">
+            <div class="flex items-center">
+              <div class="">
+                <input
+                  v-model="form.trustCode"
+                  type="tel"
+                  maxlength="4"
+                  placeholder="Input trust code here"
+                  class="placeholder-purple-500 text-xs rounded-l-md border px-3 mr-5 text-center py-3 outline-none w-full pr-6"
+                >
+              </div>
+              <div class="">
+                <button
+                  :disabled="!form.trustCode"
+                  class="text-white font-medium py-3 text-sm md:px-5 w-full flex justify-center items-center rounded-r-lg"
+                  style="background-color: #8b4e96"
+                  @click="handlePayout"
+                >
+                  Enter
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        class="md:p-10 p-3 py-4 md:py-0 shadow-md rounded-md space-y-4 bg-purple-100"
+      >
+        <div
+          style="background-color: #ba68c8"
+          class="rounded-full w-14 h-14 flex justify-center items-center"
+        >
+          <img src="@/assets/img/lock_icon.svg" class="h-7 w-7" alt="">
+        </div>
+
+        <div
+          class="md:flex justify-between items-center space-y-6 md:space-y-0"
+        >
+          <div class="space-y-3">
+            <p style="color: #360040" class="font-light text-sm md:text-base">
+              Net Profit
+            </p>
+            <div class="flex items-center space-x-2">
+              <div><img src="@/assets/img/nigeriaLogo.svg" alt=""></div>
+              <p class="font-semibold md:text-xl">
+                (NGN) 0.00
+              </p>
+            </div>
+          </div>
+          <div class="flex md:flex-col justify-start items-start">
+            <button
+              :disabled="!isFormValid && processingTranfer"
+              :class="[!isFormValid ? 'cursor-not-allowed opacity-75' : '']"
+              style="color: #ba68c8"
+              class="font-semibold text-center md:text-left ring ring-gray-100 outline-none border-2 border-purple-900 px-8 rounded-lg py-2.5 w-full"
+              @click="handleWithdrawalRequest"
+            >
+              Request withdrawal
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-6 p-4 bg-white shadow-md rounded-t-md border">
+        <h1 class="font-semibold">
+          Transaction history
+        </h1>
+        <div class="overflow-x-auto rounded-lg border-gray-200 border-t">
+          <b-card>
+            <div class="overflow-x-auto rounded-lg border-gray-200 border-t">
+              <b-table
+                striped
+                show-empty
+                responsive
+                :items="tableData"
+                :fields="fields"
+                :busy="loading"
+                :current-page="currentPage"
+                :per-page="perPage"
+              >
+                <template #table-busy>
+                  <div class="text-center my-2 cursor-pointer">
+                    <b-spinner class="align-middle" />
+                    <small>Loading...</small>
+                  </div>
+                </template>
+
+                <template #empty>
+                  <p
+                    class="text-center text-sm text-secondary py-2 cursor-pointer"
+                  >
+                    {{
+                      search
+                        ? `No programmes found for search value: "${search}"`
+                        : "No transaction history available"
+                    }}
+                  </p>
+                </template>
+
+                <template #cell(sn)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.index + 1 }}</span>
+                </template>
+
+                <template #cell(trustId)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.item.trustId }}</span>
+                </template>
+
+                <template #cell(date)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.item.date }}</span>
+                </template>
+
+                <template #cell(amount)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.item.amount }}</span>
+                </template>
+
+                <template #cell(trustCode)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.item.trustCode }}</span>
+                </template>
+
+                <template #cell(status)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.item.status }}</span>
+                </template>
+
+                <template #cell(actions)="data">
+                  <span class="font-medium py-2 text-sm cursor-pointer">
+                    {{ data.item.actions }}</span>
+                </template>
+              </b-table>
+              <div class="flex justify-end items-end">
+                <b-pagination
+                  v-model="currentPage"
+                  :total-rows="totalRows"
+                  :per-page="perPage"
+                  size="md"
+                  class="my-3"
+                />
+              </div>
+            </div>
+          </b-card>
+        </div>
+      </div>
+      <purchase-escrow-order-modal
+        :show="showPurchaseModal"
+        @close="showPurchaseModal = false"
+        @success="handleOrderSuccess"
+      />
+
+      <purchase-escrow-success-modal
+        :show="showPurchaseSuccessModal"
+        @close="showPurchaseSuccessModal = false"
+        @proceedToLogX="proceedToLogX"
+      />
+
+      <request-withdrawal-modal
+        :show="showWithdrawalModal"
+        @close="showWithdrawalModal = false"
+        @proceedWithPayment="proceedWithPayment"
+      />
+
+      <payment-method-modal
+        :show="showPaymentMethodModal"
+        @close="showPaymentMethodModal = false"
+        @selectedPaymentMethod="handleSelectedPaymentMethod"
+      />
+
+      <request-withdrawal-form-modal
+        :show="showRequestWithdrawFormModal"
+        @close="showRequestWithdrawFormModal = false"
+        @withdrawalSuccess="handleWithdrawalSuccess"
+      />
+
+      <withdrawal-success-modal
+        :show="showWithdrawalSuccessModal"
+        @close="showWithdrawalSuccessModal = false"
+      />
+
+      <b-modal
+        id="requestWithdrawalModal"
+        centered
+        hide-footer
+        no-close-on-esc
+        no-close-on-backdrop
+        no-stacking
+        size="md"
+      >
+        <template #modal-title>
+          <h1 class="text-lg font-medium" style="color: #360040">
+            Request Withdrawal
+          </h1>
+        </template>
+        <div class="space-y-6 p-6">
+          <form class="space-y-6">
+            <div class="relative space-y-3">
+              <label
+                style="color: #360040"
+                class="font-medium text-sm"
+              >To bank account
+              </label>
+              <select
+                v-model="selected_bank"
+                class="py-2.5 px-2 border w-full rounded-lg outline-none font-medium"
+                required
+              >
+                <option
+                  v-for="(bank, index) in banksList"
+                  :key="index"
+                  :value="bank"
+                >
+                  {{ bank.name }}
+                </option>
+              </select>
+            </div>
+
+            <div class="space-y-2">
+              <div class="space-y-2">
+                <label class="font-medium text-sm">Account Number</label>
+              </div>
+              <div class="">
+                <input
+                  v-model.trim="bankInfo.account_number"
+                  class="py-2.5 pr-6 pl-3 border w-full rounded-lg outline-none focus-within:border-green-500"
+                  type="tel"
+                  placeholder="Enter account number"
+                  @change="validateAccountNumber"
+                >
+              </div>
+              <p
+                v-if="accountNameError || !isAccountNumberValid"
+                class="text-red-500 text-xs"
+              >
+                {{ accountNameError }}
+              </p>
+            </div>
+
+            <section
+              class="lg:flex justify-between space-y-3 lg:space-y-0 lg:space-x-10 items-center"
+            >
+              <p v-if="loadingAccountName" class="text-xs text-green-600">
+                Verifying account number...
+              </p>
+
+              <div v-if="!loadingAccountName" class="space-y-2 w-full relative">
+                <label class="text-xs font-medium text-grays-black-5">Account Name</label>
+                <input
+                  v-model.trim="bankInfo.account_name"
+                  type="text"
+                  class="text-xs bg-gray-100 outline-none focus-within:border-green-500 border-none w-full rounded-md p-3 placeholder-gray-500 placeholder-opacity-25 ring-1 ring-gray-300"
+                  placeholder=""
+                  readonly
+                >
+              </div>
+            </section>
+
+            <div class="space-y-3">
+              <div class="space-y-2">
+                <label class="font-medium text-sm">Amount</label>
+              </div>
+              <div class="relative">
+                <input
+                  v-model.trim="bankInfo.withdraw_amount"
+                  class="py-2.5 pr-6 text-sm outline-none focus:border-green-500 pl-6 border w-full rounded-lg"
+                  type="tel"
+                  placeholder="Enter amount."
+                >
+              </div>
+            </div>
+          </form>
+          <div class="flex flex-col space-y-3 justify-center items-center pt-3">
+            <button
+              :disabled="!isFormValid && processingTranfer"
+              :class="[!isFormValid ? 'cursor-not-allowed opacity-75' : '']"
+              class="font-semibold py-2 w-full text-white rounded-lg"
+              style="background-color: #8b4e96"
+              @click="proceedWithWithdrawal"
+            >
+              {{ processingTranfer ? "Processing..." : "Withdraw" }}
+            </button>
+          </div>
+        </div>
+      </b-modal>
+
+      <b-modal
+        id="withdrawalSuccessModal"
+        centered
+        hide-footer
+        hide-header
+        no-close-on-esc
+        no-close-on-backdrop
+        no-stacking
+        size="md"
+      >
+        <div class="space-y-10 p-6">
+          <div class="space-y-6">
+            <div class="flex justify-center flex-col items-center space-y-3">
+              <p
+                class="flex justify-center font-medium items-center pb-3"
+                style="color: #360040"
+              >
+                Withdrawal Completed
+              </p>
+              <div>
+                <img src="@/assets/img/success_badge.svg" alt="">
+              </div>
+            </div>
+
+            <p
+              class="font-light text-center leading-loose"
+              style="color: #360040"
+            >
+              We have credited your account with
+              <img
+                class="inline ml-1"
+                src="@/assets/img/nigeriaLogo.svg"
+                alt=""
+              ><b>(NGN) 2,500,000</b>
+            </p>
+          </div>
+          <div class="flex justify-center items-center">
+            <button
+              class="font-medium py-2 w-full text-white rounded-lg"
+              style="background-color: #8b4e96"
+              @click="close"
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      </b-modal>
+
+      <b-modal
+        id="unVerifiedUserModal"
+        centered
+        hide-footer
+        hide-header
+        no-close-on-esc
+        no-close-on-backdrop
+        no-stacking
+        size="md"
+      >
+        <div class="space-y-6 p-3">
+          <p class="flex justify-center items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="50"
+              height="50"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#4a90e2"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </p>
+          <p class="text-gray-600">
+            Please you need to verify your account to make withdrawals.
+          </p>
+          <p class="text-gray-600">
+            Would you like to proceed to fund your wallet?
+          </p>
+
+          <div class="flex justify-center items-center space-x-6">
+            <button
+              class="font-medium py-2.5 w-full text-sm text-white rounded-md bg-red-400"
+              @click="closeAccountVerificationModal"
+            >
+              Cancel
+            </button>
+            <button
+              class="font-medium py-2.5 w-full text-sm text-white rounded-md bg-black"
+              @click="redirectToAccountVerification"
+            >
+              proceed
+            </button>
+          </div>
+        </div>
+      </b-modal>
+    </div>
+  </main>
+</template>
+
+<script>
+import PurchaseEscrowOrderModal from '@/components/PurchaseEscrowOrderModal.vue'
+import PurchaseEscrowSuccessModal from '@/components/PurchaseEscrowSuccessModal.vue'
+import RequestWithdrawalModal from '@/components/RequestWithdrawalModal.vue'
+import PaymentMethodModal from '@/components/PaymentMethodModal.vue'
+import RequestWithdrawalFormModal from '@/components/RequestWithdrawalFormModal.vue'
+import WithdrawalSuccessModal from '@/components/WithdrawalSuccessModal.vue'
+
+export default {
+  // eslint-disable-next-line vue/multi-word-component-names
+  name: 'Dashboard',
+  components: {
+    PurchaseEscrowOrderModal,
+    PurchaseEscrowSuccessModal,
+    PaymentMethodModal,
+    RequestWithdrawalModal,
+    RequestWithdrawalFormModal,
+    WithdrawalSuccessModal
+  },
+  layout: 'dashboardLayout',
+  data () {
+    return {
+      banksList: [],
+      loggedInUser: null,
+      showPurchaseModal: false,
+      showPurchaseSuccessModal: false,
+      loadingAccountName: false,
+      processingTranfer: false,
+      showWithdrawalModal: false,
+      showPaymentMethodModal: false,
+      showRequestWithdrawFormModal: false,
+      showWithdrawalSuccessModal: false,
+      search: '',
+      selected_bank: null,
+      form: {
+        trustCode: ''
+      },
+      bankInfo: {
+        account_number: '',
+        bank_code: '',
+        account_name: '',
+        withdraw_amount: ''
+      },
+      currentPage: 1,
+      totalRows: 1,
+      loading: true,
+      tableData: [],
+      perPage: 7,
+      fields: [
+        {
+          key: 'sn',
+          label: 'S/N',
+          class: 'font-medium text-gray-400 text-sm'
+        },
+        {
+          key: 'trustId',
+          label: 'Trust Id',
+          class: 'font-medium text-gray-400 text-sm'
+        },
+        {
+          key: 'date',
+          label: 'Date',
+          class: 'font-medium text-gray-400 text-sm'
+        },
+        {
+          key: 'amount',
+          label: 'Amount',
+          class: 'font-medium text-gray-400 text-sm'
+        },
+        {
+          key: 'trustCode',
+          label: 'Trust Code',
+          class: 'font-medium text-gray-400 text-sm'
+        },
+        {
+          key: 'status',
+          label: 'Status',
+          class: 'font-medium text-gray-400 text-sm'
+        },
+        {
+          key: 'actions',
+          label: 'Actions',
+          class: 'font-medium text-gray-400 text-sm'
+        }
+      ],
+      accountNameError: '',
+      isAccountNumberValid: true
+    }
+  },
+  computed: {
+    isFormValid () {
+      return !!(
+        this.bankInfo.account_number &&
+        this.bankInfo.account_name &&
+        this.bankInfo.withdraw_amount
+      )
+    }
+  },
+  watch: {
+    selected_bank (value) {
+      if (value) {
+        this.bankHasBeenSelected = true
+      }
+      this.bankInfo.bank_code = value.code
+    },
+    'bankInfo.account_number' (value) {
+      if (value.length === 10) {
+        this.validateAccountNumber()
+      }
+
+      if (value.length !== 10) {
+        this.isAccountNumberValid = false
+        this.bankInfo.account_name = ''
+        this.accountNameError = ''
+      }
+
+      if (value.length === 0) {
+        this.accountNameError = ''
+      }
+    }
+  },
+  mounted () {
+    const loggedUser = localStorage.getItem('user')
+    this.loggedInUser = loggedUser !== null ? JSON.parse(loggedUser) : ''
+    this.totalRows = this.tableData.length
+  },
+  created () {
+    this.loadBanks()
+    this.setUserData()
+    this.loadEscrowOrders()
+  },
+  methods: {
+    handlePayout () {
+      this.creditingWallet = true
+      const formData = {
+        trustCode: this.form.trustCode
+      }
+      this.$axios
+        .post('/credit-wallet', formData)
+        .then((res) => {
+          console.log(res.data)
+        })
+        .catch((error) => {
+          console.log(error.response)
+        })
+        .finally(() => {
+          this.creditingWallet = false
+        })
+    },
+    redirectToAccountVerification () {
+      this.$router.push('/dashboard/settings/profile')
+    },
+    closeAccountVerificationModal () {
+      this.$bvModal.hide('unVerifiedUserModal')
+    },
+    loadBanks () {
+      this.$axios
+        .get('https://api.paystack.co/bank?currency=NGN')
+        .then((res) => {
+          this.banksList = res.data.data
+        })
+        .catch(() => {
+          alert('Something went wrong while loading baanks')
+          // this.$toast.error("Something went wrong while loading baanks.");
+        })
+    },
+    setUserData () {
+      if (process.client) {
+        this.trustId = localStorage.getItem('trustId')
+        this.userEmail = localStorage.getItem('email')
+      }
+    },
+    loadEscrowOrders () {
+      this.loading = true
+      this.$axios
+        .get(
+          `https://trustwallet-oana.onrender.com/api/user/escrow_order/${this.loggedInUser?.trustId}`
+        )
+        .then((res) => {
+          this.tableData = res.data
+          this.totalRows = res.data.length
+        })
+        .catch(() => {
+          console(
+            'Something went wrong while fetching escrow orders'
+          )
+        })
+        .finally(() => {
+          this.loading = false
+        })
+    },
+    async proceedWithWithdrawal () {
+      this.processingTranfer = true
+      try {
+        const withdrawalPayload = {
+          type: 'nuban',
+          name: '',
+          account_number: this.bankInfo.account_number,
+          bank_code: this.bankInfo.bank_code,
+          currency: 'NGN'
+        }
+
+        const response = await this.$axios.post(
+          'https://api.paystack.co/transferrecipient',
+          withdrawalPayload,
+          {
+            headers: {
+              authorization:
+                'Bearer sk_live_c6e48951ea505ee01d035de53026cb9fb48a614a',
+              'content-type': 'application/json'
+            }
+          }
+        )
+
+        const paystackWithdrawalPayload = {
+          source: 'balance',
+          amount: this.bankInfo.withdraw_amount,
+          reference: '' + Math.floor(Math.random() * 100000000000000 + 1),
+          recipient: response.data.data.recipient_code,
+          reason: 'Withdraw to bank'
+        }
+
+        const paystackTransferResult = await this.$axios.post(
+          'https://api.paystack.co/transfer',
+          paystackWithdrawalPayload,
+          {
+            headers: {
+              authorization:
+                'Bearer sk_live_c6e48951ea505ee01d035de53026cb9fb48a614a',
+              'content-type': 'application/json'
+            }
+          }
+        )
+
+        const trustWalletWithdrawalPayload = {
+          trustId: '8147626503',
+          amount: paystackTransferResult.data.data.amount
+        }
+
+        await this.$axios.post(
+          '/payment/withdraw',
+          trustWalletWithdrawalPayload
+        )
+
+        this.$bvModal.show('withdrawalSuccessModal')
+      } catch (error) {
+        this.$toast.error(error.response.data.message)
+      } finally {
+        this.processingTranfer = false
+      }
+    },
+    handleWithdrawalRequest () {
+      if (this.loggedInUser.verified) {
+        this.$bvModal.show('requestWithdrawalModal')
+      } else {
+        this.$bvModal.show('unVerifiedUserModal')
+      }
+    },
+    toggleEscrowPurchaseModal () {
+      this.showPurchaseModal = !this.showPurchaseModal
+    },
+
+    toggleWithdrawalModal () {
+      this.showWithdrawalModal = !this.showWithdrawalModal
+    },
+
+    handleOrderSuccess () {
+      this.showPurchaseModal = false
+      this.showPurchaseSuccessModal = true
+    },
+    proceedToLogX () {
+      this.showPurchaseSuccessModal = false
+    },
+
+    handleSelectedPaymentMethod (val) {
+      this.showRequestWithdrawFormModal = true
+      this.showPaymentMethodModal = false
+    },
+
+    proceedWithPayment () {
+      this.showWithdrawalModal = false
+      this.showPaymentMethodModal = true
+    },
+
+    handleWithdrawalSuccess () {
+      this.showWithdrawalSuccessModal = true
+      this.showRequestWithdrawFormModal = false
+    },
+    validateAccountNumber () {
+      this.isAccountNumberValid = true
+      this.loadingAccountName = true
+      this.$axios
+        .get(
+          `https://api.paystack.co/bank/resolve?account_number=${this.bankInfo.account_number}&bank_code=${this.bankInfo.bank_code}`,
+          {
+            headers: {
+              authorization:
+                'Bearer sk_live_c6e48951ea505ee01d035de53026cb9fb48a614a'
+            }
+          }
+        )
+        .then((res) => {
+          this.isAccountNumberValid = true
+          this.bankInfo.account_name = res.data.data.account_name
+        })
+        .catch(() => {
+          this.isAccountNumberValid = false
+          this.accountNameError = 'please enter a valid account number'
+        })
+        .finally(() => {
+          this.loadingAccountName = false
+        })
+    },
+    close () {
+      this.$bvModal.hide('withdrawalSuccessModal')
+    }
+  }
+}
+</script>
